@@ -6,6 +6,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
+from src.components.data_transform import DataTransform,DataTransformationConfig
+
 # Creating this classes that will create a train,test and raw data path for us
 @dataclass
 class DataIngestionConfig:
@@ -54,4 +56,7 @@ class DataIngestion:
 
 if __name__=="__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_path,test_path = obj.initiate_data_ingestion()
+
+    data_trans = DataTransform()
+    data_trans.initiate_data_transformation(train_path,test_path)

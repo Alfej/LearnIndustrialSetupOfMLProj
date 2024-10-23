@@ -3,6 +3,7 @@ seaborn
 numpy
 matplotlib
 lightgbm
-sklearn
+scikit-learn
 catboost
--e .
+dill
+#-e .
