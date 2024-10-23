@@ -4,4 +4,5 @@ numpy
 matplotlib
 lightgbm
 sklearn
+catboost
 -e .
