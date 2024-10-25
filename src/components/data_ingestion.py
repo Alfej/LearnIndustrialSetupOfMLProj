@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
 from src.components.data_transform import DataTransform,DataTransformationConfig
+from src.components.model_train import ModelTrainer,ModelTrainingConfig
 
 # Creating this classes that will create a train,test and raw data path for us
 @dataclass
@@ -59,4 +60,8 @@ if __name__=="__main__":
     train_path,test_path = obj.initiate_data_ingestion()
 
     data_trans = DataTransform()
-    data_trans.initiate_data_transformation(train_path,test_path)
+    train_arr,test_arr,_ =  data_trans.initiate_data_transformation(train_path,test_path)
+    # print(train_arr[0])
+    modelTrainer = ModelTrainer()
+    print(modelTrainer.initiateModelTraining(train_arr,test_arr))
+

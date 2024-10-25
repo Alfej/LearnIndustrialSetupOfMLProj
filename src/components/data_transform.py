@@ -31,6 +31,8 @@ class DataTransform:
                 ,'cb_person_default_on_file'
                 ,'person_home_ownership'
             ]
+            one_hot_encoder = OneHotEncoder()
+            label_encoder = OrdinalEncoder()
 
             oneHot_pipeline = Pipeline(
                 steps=[
@@ -44,13 +46,14 @@ class DataTransform:
             )
             
             preprocessor = ColumnTransformer(
-                [
-                    ("Label_encode_pipeline",LabelEncode_pipeline,label_encode_cols),
-                    ("oneHot_encode_pipeline",oneHot_pipeline,OneHot_encode_cols)
-                ]
+                transformers=[
+                    ("Label_encode_pipeline",label_encoder,label_encode_cols),
+                    ("oneHot_encode_pipeline",one_hot_encoder,OneHot_encode_cols)
+                ],
+                remainder="passthrough"
             )
 
-            logging.info("Categorical columns encoding completed")
+            logging.info("Preprocess created")
 
             return preprocessor
         
@@ -79,14 +82,16 @@ class DataTransform:
 
             logging.info("Applying preprocessing on train data")
 
-            input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
+            input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df,set)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
 
+
+
             train_arr = np.c_[
-                input_feature_train_arr,np.array(input_feature_train_df)
+                input_feature_train_arr,np.array(target_feature_train_df)
             ]
             test_arr = np.c_[
-                input_feature_test_arr,np.array(input_feature_test_df)
+                input_feature_test_arr,np.array(target_feature_test_df)
             ]
 
             logging.info("completed transformation")
